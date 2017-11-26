@@ -10,7 +10,6 @@
  * A session always sends a message object, not a text
  */
 class Message {
-
 public:
     
     Message(std::string text);

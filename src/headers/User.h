@@ -8,7 +8,6 @@
 #include "Message.h"
 
 class User {
-
 public:
     User(std::string username, std::string password);
 

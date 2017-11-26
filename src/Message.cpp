@@ -3,4 +3,3 @@
 Message::Message(std::string text) {
     this->text = text;
 }
-

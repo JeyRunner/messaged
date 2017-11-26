@@ -3,67 +3,46 @@
  * github.com/cyberuserful/messaged
 */
 
-
-
 #include "headers/Socket.h"
 #include "headers/Session.h"
 #include <string>
+#include <vector>
 #include <iostream>
-#include <fstream>
 
 #define MAXTHREADS 100
 #define DEBUG
 
-bool accepting = true; 	// accepts connection
+int main (int argc, char** argv) {
 
+  if (argc < 2)  {
+    std::cerr << "usage: \"" << argv[0] << " <port>\"" << std::endl;
+    return 1;
+  }
 
-int main (int argc, char* argv[]) {
+  // queues a maximum of 1000 incoming connections
+  Socket socket(1000);
+  socket.create();
+  // server listens on port 1
+  socket.bind(1);
+  socket.listen();
 
-    if (argc < 2)  {
+  // TODO: find better way to store active sessions
+  std::vector<Session*> sessions(100);
 
-        std::cerr << "please use: \"program <port>\"" << std::endl;
-        exit(1);
+  bool accepting = true;
+  Socket* newSocket;
+
+  // server accept loop
+  while (accepting) {
+    if (socket.accept(newSocket)) {
+
+      sessions.push_back(new Session(newSocket));
+      std::cout << "[system]: detached session" << std::endl;
     }
+  }
 
-
-    for (uint i = 0; i < MAXTHREADS; i++)
-      pool[i] = NULL;
-
-
-    cout << "[system]: setting up socket on port: 1234 ... ";
-    Socket mainSocket( 100 );
-    mainSocket.create();
-    mainSocket.bind( atoi( argv[1] ) );
-    mainSocket.listen();
-    cout << "done" << endl;
-
-
-
-
-    // free id
-    uint id;
-    // buffer for accepted socket
-    Socket* buf;
-
-    // server accept loop
-    while (accepting) {
-
-      id = Session::getFreeSessionIndex();
-      if (id == -1)
-      {
-        cout << "[system]: No more connection slots available!" << endl;
-        sleep(100);
-      }
-
-      if ( mainSocket.accept( buf ) )
-      {
-        Session::pool[id] = new Session(id, buf);
-        Session::pool[id]->detach();
-        cout << "[system]: detached session with id: " << id << endl;
-      }
-    }
-
-
-    mainSocket.close();
-    return 0;
+  
+  // terminating
+  socket.close();
+  return 0;
 }

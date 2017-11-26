@@ -1,6 +1,6 @@
 #include "headers/Session.h"
 
-Session::Session(std::string identifier, Socket* socket)
+Session::Session(Socket* socket)
 {
 	this->socket = socket;
 

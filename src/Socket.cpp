@@ -1,9 +1,8 @@
-// socket.cpp
+// Socket.cpp
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
 #include "headers/Socket.h"
-using namespace std;
 
 // Konstruktor
 Socket::Socket(const int MAXCONNECTIONS) : m_sock(0), MAXCONNECTIONS(MAXCONNECTIONS) {}
@@ -18,7 +17,7 @@ Socket::~Socket() {
 bool Socket::create() {
    m_sock = ::socket(AF_INET,SOCK_STREAM,0);
    if (m_sock < 0) {
-      cout << "Fehler beim Anlegen eines Socket" << endl;
+      std::cout << "Fehler beim Anlegen eines Socket" << std::endl;
       exit(1);
    }
    int y=1;
@@ -32,7 +31,7 @@ bool Socket::create() {
 bool Socket::UDP_create() {
    m_sock = ::socket(AF_INET,SOCK_DGRAM,0);
    if (m_sock < 0) {
-      cout << "Fehler beim Anlegen eines Socket" << endl;
+      std::cout << "Fehler beim Anlegen eines Socket" << std::endl;
       exit(1);
    }
 }
@@ -80,7 +79,7 @@ bool Socket::accept ( Socket* new_socket ) const {
 }
 
 // Baut die Verbindung zum Server auf
-bool Socket::connect( const string host, const int port ) {
+bool Socket::connect( const std::string host, const int port ) {
    if ( ! is_valid() )
       return false;
    struct hostent *host_info;
@@ -96,7 +95,7 @@ bool Socket::connect( const string host, const int port ) {
         * bspw. "localhost" in eine IP-Adresse um         */
        host_info = gethostbyname( host.c_str() );
        if (NULL == host_info) {
-          cout << "Unbekannter Server" << endl;
+          std::cout << "Unbekannter Server" << std::endl;
           exit(1);
        }
        memcpy( (char *)&m_addr.sin_addr, host_info->h_addr,
@@ -115,7 +114,7 @@ bool Socket::connect( const string host, const int port ) {
 }
 
 // Daten versenden via TCP
-bool Socket::send( const string s ) const {
+bool Socket::send( const std::string s ) const {
    int status = ::send ( m_sock, s.c_str(), s.size(),  0 );
    if ( status == -1 ) {
       return false;
@@ -126,7 +125,7 @@ bool Socket::send( const string s ) const {
 }
 
 // Daten empfangen via TCP
-int Socket::recv ( string& s ) const {
+int Socket::recv ( std::string& s ) const {
   char buf [ MAXRECV + 1 ];
   s = "";
   memset ( buf, 0, MAXRECV + 1 );
@@ -137,20 +136,20 @@ int Socket::recv ( string& s ) const {
      return status;
   }
   else {
-     cout << "Fehler in Socket::recv" << endl;
+     std::cout << "Fehler in Socket::recv" << std::endl;
      return 0;
   }
 }
 
 // Daten versenden via UDP
-bool Socket::UDP_send( const string addr, const string s, const int port ) const {
+bool Socket::UDP_send( const std::string addr, const std::string s, const int port ) const {
    struct sockaddr_in addr_sento;
    struct hostent *h;
    int rc;
 
    h = gethostbyname(addr.c_str());
    if (h == NULL) {
-      cout << "Unbekannter Host?" << endl;
+      std::cout << "Unbekannter Host?" << std::endl;
       exit(1);
    }
    addr_sento.sin_family = h->h_addrtype;
@@ -161,15 +160,14 @@ bool Socket::UDP_send( const string addr, const string s, const int port ) const
                  (struct sockaddr *) &addr_sento,
                   sizeof (addr_sento));
    if (rc == -1) {
-      cout << "Konnte Daten nicht senden - sendto()"
-           << endl;
+      std::cout << "Konnte Daten nicht senden - sendto()" << std::endl;
       exit(1);
    }
    return true;
 }
 
 // Daten empfangen vie UDP
-int Socket::UDP_recv( string& s ) const {
+int Socket::UDP_recv( std::string& s ) const {
    struct sockaddr_in addr_recvfrom;
    int len, n;
    char buf [ MAXRECV + 1 ];
@@ -180,7 +178,7 @@ int Socket::UDP_recv( string& s ) const {
                   (struct sockaddr *) &addr_recvfrom,
                   ( socklen_t * )&len );
    if (n == -1){
-      cout << "Fehler bei recvfrom()" << endl;
+      std::cout << "Fehler bei recvfrom()" << std::endl;
       exit(1);
       return 0;
    }

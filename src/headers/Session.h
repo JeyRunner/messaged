@@ -7,11 +7,9 @@
 #include <thread>
 #include <iostream>
 
-class Session
-{
+class Session {
 public:
-
-	Session(std::string identifier, Socket* socket);
+	Session(Socket* socket);
 
     ~Session();
 
@@ -26,7 +24,7 @@ private:
 	std::string identifier;
 	Socket* socket;
 
-	thread receivingThread;
+	std::thread receivingThread;
 };
 
 #endif
