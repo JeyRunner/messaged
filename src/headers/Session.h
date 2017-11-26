@@ -1,11 +1,11 @@
 #ifndef SESSION_H_
 #define SESSION_H_
 
-#include <string>
 #include "Socket.h"
+#include "Message.h"
+#include <string>
 #include <thread>
 #include <iostream>
-#include "Message.h"
 
 class Session
 {
@@ -22,7 +22,7 @@ public:
 	void receive();
 
 private:
-    
+
 	std::string identifier;
 	Socket* socket;
 

@@ -1,12 +1,18 @@
-// echo_server.cpp
-#include "socket.h"
-#include "session.h"
-#include "authentication.h"
+/* 
+ * CPP Message Server
+ * github.com/cyberuserful/messaged
+*/
+
+
+
+#include "headers/Socket.h"
+#include "headers/Session.h"
 #include <string>
 #include <iostream>
 #include <fstream>
 
 #define MAXTHREADS 100
+#define DEBUG
 
 bool accepting = true; 	// accepts connection
 
