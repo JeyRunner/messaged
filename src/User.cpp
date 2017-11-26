@@ -1,57 +1,40 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include "Session.cpp"
-#include "Message.cpp"
+#include "headers/User.h"
 
-class User {
+User::User(std::string username, std::string password) {
+    this->username = username;
+    this->password = password;
+}
 
-public:
-    User(std::string username, std::string password)
+// sends message to user (returns false, if receiver does not have at least one session)
+bool User::sendMessage(Message* message)
+{
+    uint sessionCount = this->sessions.size();
+
+    if (sessionCount == 0)
+        return false;
+
+    for (uint i; i < sessionCount; i++)
     {
-        this->username = username;
-        this->password = password;
+        this->sessions[i].send(message);
     }
 
-    // sends message to user (returns false, if receiver does not have at least one session)
-    bool sendMessage(Message* message)
+    return true;
+}
+
+
+bool User::verifyCredentials(std::string username, std::string password)
+{
+    if (username == this->username && password == this->password)
     {
-        uint sessionCount = sessions.size();
-
-        if (sessionCount == 0)
-            return false;
-
-        for (uint i; i < sessionCount; i++)
-        {
-            sessions[i].send(message);
-        }
-
         return true;
     }
+    
+
+    return false;
+}
 
 
-    bool verifyCredentials(std::string username, std::string password)
-    {
-        if (username == this.username && password == this.password)
-        {
-            return true;
-        }
-        
-
-        return false;
-    }
-
-
-    void addSession(Session* newSession)
-    {
-        this.mySessions.push_back(newSession);
-    }
-
-
-private:
-    std::vector<Session*> sessions();
-
-    std::string username;
-    std::string password;
-
-};
+void User::addSession(Session* newSession)
+{
+    this->sessions.push_back(newSession);
+}

@@ -1,30 +1,6 @@
-#include <string>
-#include "User.cpp"
+#include "headers/Message.h"
 
-/*
- * This is message
- * A message is not only a text, but can also be any kind of data (e.g. a file)
- * A session always sends a message object, not a text
- */
-class Message {
+Message::Message(std::string text) {
+    this->text = text;
+}
 
-    Message()
-    {
-        
-    }
-
-    string getText()
-    {
-        return this.text;
-    }
-
-private:
-    
-    User* sender;
-    User* receiver;
-    
-    std::string text;
-
-    uint sendTimestamp;
-    uint receivedTimestamp;
-};
