@@ -33,7 +33,7 @@ bool Session::send(Message* message)
 std::string Session::recv()
 {
 	// receive serialized message object, deserialize it and return object
-	string buffer;
+	std::string buffer;
 	socket->recv(buffer);
 
 	return buffer;

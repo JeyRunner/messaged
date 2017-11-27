@@ -20,7 +20,7 @@ public:
 
 
 private:
-    std::vector<Session*> sessions();
+    std::vector<Session*> sessions;
 
     std::string username;
     std::string password;

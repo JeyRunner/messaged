@@ -15,7 +15,7 @@ bool User::sendMessage(Message* message)
 
     for (uint i; i < sessionCount; i++)
     {
-        this->sessions[i].send(message);
+        this->sessions[i]->send(message);
     }
 
     return true;

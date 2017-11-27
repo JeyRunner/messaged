@@ -2,7 +2,7 @@
 #define MESSAGE_H_
 
 #include <string>
-#include "User.h"
+class User;
 
 /*
  * This is a message

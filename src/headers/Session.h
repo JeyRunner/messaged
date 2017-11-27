@@ -15,7 +15,7 @@ public:
 
 	bool send( Message* message );
 
-	std::string Session::recv();
+	std::string recv();
 
 	void receive();
 
